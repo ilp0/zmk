@@ -1,0 +1,4 @@
+config SHIELD_DISCONNECT72_LEFT
+    def_bool $(shields_list_contains,disconnect72_left)
+config SHIELD_DISCONNECT72_RIGHT
+    def_bool $(shields_list_contains,disconnect72_right)
