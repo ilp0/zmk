@@ -1,3 +1,28 @@
+#include "common.dtsi"
+/ {
+kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        label = "KSCAN";
+        diode-direction = "col2row";
+    row-gpios
+        = <&pro_micro 4 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row 0 from the schematic file
+        , <&pro_micro 5 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row 1 from the schematic file
+        , <&pro_micro 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row 2 from the schematic file
+        , <&pro_micro 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row 3 from the schematic file
+        , <&pro_micro 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row 4 from the schematic file
+        ;
+
+    col-gpios
+        = <&pro_micro 9 GPIO_ACTIVE_HIGH> // Col 0 in the schematic
+        , <&pro_micro 10 GPIO_ACTIVE_HIGH> // Col 1 in the schematic
+        , <&pro_micro 16 GPIO_ACTIVE_HIGH> // Col 2 in the schematic
+        , <&pro_micro 14 GPIO_ACTIVE_HIGH> // Col 3 in the schematic
+        , <&pro_micro 15 GPIO_ACTIVE_HIGH> // Col 4 in the schematic
+        , <&pro_micro 18 GPIO_ACTIVE_HIGH> // Col 5 in the schematic
+        ;
+    };
+};
+
 &left_encoder {
     status = "okay";
 };
