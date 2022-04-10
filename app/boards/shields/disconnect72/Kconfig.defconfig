@@ -1,14 +1,14 @@
-if SHIELD_MY_BOARD_LEFT
+if SHIELD_DISCONNECT72_RIGHT
 
 config ZMK_KEYBOARD_NAME    
-    default "Disconnect72"
+    default "d72zmk"
 
 config ZMK_SPLIT_BLE_ROLE_CENTRAL    
     default y
 
 endif
 
-if SHIELD_MY_BOARD_LEFT || SHIELD_MY_BOARD_RIGHT
+if SHIELD_DISCONNECT72_LEFT || SHIELD_DISCONNECT72_RIGHT
 
 config ZMK_SPLIT    
     default y

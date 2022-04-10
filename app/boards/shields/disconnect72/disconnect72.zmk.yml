@@ -1,6 +1,6 @@
 file_format: "1"
-id: disconnect72
-name: Disconnect72
+id: disconnect72zmk
+name: Disconnect72zmk
 type: shield
 url: https://github.com/ilp0/disconnect72
 requires: [pro_micro]

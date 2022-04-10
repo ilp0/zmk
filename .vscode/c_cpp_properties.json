@@ -11,7 +11,8 @@
             "cStandard": "gnu17",
             "cppStandard": "gnu++14",
             "intelliSenseMode": "gcc-arm",
-            "compileCommands": "/workspaces/zmk/app/build/compile_commands.json"
+            "compileCommands": "/workspaces/zmk/app/build/compile_commands.json",
+            "configurationProvider": "ms-vscode.cmake-tools"
         }
     ],
     "version": 4
