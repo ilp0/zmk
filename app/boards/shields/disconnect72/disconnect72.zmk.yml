@@ -1,0 +1,14 @@
+file_format: "1"
+id: disconnect72
+name: Disconnect72
+type: shield
+url: https://github.com/ilp0/disconnect72
+requires: [pro_micro]
+exposes: [i2c_oled]
+features:
+  - keys
+  - encoder
+  - display
+siblings:
+  - disconnect72_left
+  - disconnect72_right
