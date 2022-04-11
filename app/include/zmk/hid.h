@@ -205,6 +205,116 @@ static const uint8_t zmk_hid_report_desc[] = {
     HID_MI_COLLECTION_END,
     /* END COLLECTION */
     HID_MI_COLLECTION_END,
+
+    /* USAGE_PAGE (Generic Desktop) */
+    HID_GI_USAGE_PAGE,
+    HID_USAGE_GD,
+    /* USAGE (Mouse) */
+    HID_LI_USAGE,
+    HID_USAGE_GD_MOUSE,
+    /* COLLECTION (Application) */
+    HID_MI_COLLECTION,
+    COLLECTION_APPLICATION,
+    /* REPORT ID (4) */
+    HID_GI_REPORT_ID,
+    0x04,
+    /* USAGE (Pointer) */
+    HID_LI_USAGE,
+    HID_USAGE_GD_POINTER,
+    /* COLLECTION (Physical) */
+    HID_MI_COLLECTION,
+    COLLECTION_PHYSICAL,
+    /* USAGE_PAGE (Button) */
+    HID_GI_USAGE_PAGE,
+    HID_USAGE_BUTTON,
+    /* USAGE_MINIMUM (0x1) (button 1?) */
+    HID_LI_USAGE_MIN(1),
+    0x1,
+    /* USAGE_MAXIMUM (0x10) (button 5? Buttons up to 8 still work) */
+    HID_LI_USAGE_MAX(1),
+    0x10,
+    /* LOGICAL_MINIMUM (0) */
+    HID_GI_LOGICAL_MIN(1),
+    0x00,
+    /* LOGICAL_MAXIMUM (1) */
+    HID_GI_LOGICAL_MAX(1),
+    0x01,
+    /* REPORT_SIZE (1) */
+    HID_GI_REPORT_SIZE,
+    0x01,
+    /* REPORT_COUNT (16) */
+    HID_GI_REPORT_COUNT,
+    0x10,
+    /* INPUT (Data,Var,Abs) */
+    HID_MI_INPUT,
+    0x02,
+    /* USAGE_PAGE (Generic Desktop) */
+    HID_GI_USAGE_PAGE,
+    HID_USAGE_GD,
+    /* LOGICAL_MINIMUM (-32767) */
+    HID_GI_LOGICAL_MIN(2),
+    0x01,
+    0x80,
+    /* LOGICAL_MAXIMUM (32767) */
+    HID_GI_LOGICAL_MAX(2),
+    0xFF,
+    0x7F,
+    /* REPORT_SIZE (16) */
+    HID_GI_REPORT_SIZE,
+    0x10,
+    /* REPORT_COUNT (2) */
+    HID_GI_REPORT_COUNT,
+    0x02,
+    /* USAGE (X) */ // Vertical scroll
+    HID_LI_USAGE,
+    HID_USAGE_GD_X,
+    /* USAGE (Y) */
+    HID_LI_USAGE,
+    HID_USAGE_GD_Y,
+    /* Input (Data,Var,Rel) */
+    HID_MI_INPUT,
+    0x06,
+    /* LOGICAL_MINIMUM (-127) */
+    HID_GI_LOGICAL_MIN(1),
+    0x81,
+    /* LOGICAL_MAXIMUM (127) */
+    HID_GI_LOGICAL_MAX(1),
+    0x7F,
+    /* REPORT_SIZE (8) */
+    HID_GI_REPORT_SIZE,
+    0x08,
+    /* REPORT_COUNT (1) */
+    HID_GI_REPORT_COUNT,
+    0x01,
+    /* USAGE (Wheel) */
+    HID_LI_USAGE,
+    HID_USAGE_GD_WHEEL,
+    /* Input (Data,Var,Rel) */
+    HID_MI_INPUT,
+    0x06,
+    /* USAGE_PAGE (Consumer) */ // Horizontal scroll
+    HID_GI_USAGE_PAGE,
+    HID_USAGE_CONSUMER,
+    /* USAGE (AC Pan) */
+    0x0A,
+    0x38,
+    0x02,
+    /* LOGICAL_MINIMUM (-127) */
+    HID_GI_LOGICAL_MIN(1),
+    0x81,
+    /* LOGICAL_MAXIMUM (127) */
+    HID_GI_LOGICAL_MAX(1),
+    0x7F,
+    /* REPORT_COUNT (1) */
+    HID_GI_REPORT_COUNT,
+    0x01,
+    /* Input (Data,Var,Rel) */
+    HID_MI_INPUT,
+    0x06,
+    /* END COLLECTION */
+    HID_MI_COLLECTION_END,
+    /* END COLLECTION */
+    HID_MI_COLLECTION_END,
 };
 
 // struct zmk_hid_boot_report

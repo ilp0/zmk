@@ -30,6 +30,7 @@ target_sources(app PRIVATE src/hid.c)
 target_sources(app PRIVATE src/mouse/key_listener.c)
 target_sources(app PRIVATE src/mouse/main.c)
 target_sources(app PRIVATE src/mouse/tick_listener.c)
+target_sources_ifdef(CONFIG_ZMK_TRACKBALL_PIM447 app PRIVATE src/mouse/trackball_pim447.c)
 target_sources(app PRIVATE src/sensors.c)
 target_sources_ifdef(CONFIG_ZMK_WPM app PRIVATE src/wpm.c)
 target_sources(app PRIVATE src/event_manager.c)
@@ -70,6 +71,10 @@ if ((NOT CONFIG_ZMK_SPLIT) OR CONFIG_ZMK_SPLIT_BLE_ROLE_CENTRAL)
   target_sources(app PRIVATE src/behaviors/behavior_mouse_key_press.c)
   target_sources(app PRIVATE src/behaviors/behavior_mouse_move.c)
   target_sources(app PRIVATE src/behaviors/behavior_mouse_scroll.c)
+<<<<<<< HEAD
+=======
+  target_sources(app PRIVATE src/behaviors/behavior_trackball_pim447.c)
+>>>>>>> eb8889883d1e91f58a42f0babc17a10fa3fa1b4a
   target_sources_ifdef(CONFIG_ZMK_EXT_POWER app PRIVATE src/behaviors/behavior_ext_power.c)
   target_sources(app PRIVATE src/combo.c)
   target_sources(app PRIVATE src/behavior_queue.c)
