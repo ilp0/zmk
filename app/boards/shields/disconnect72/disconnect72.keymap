@@ -4,6 +4,7 @@
 #include <dt-bindings/zmk/ext_power.h>
 
 / {
+
 	keymap {
 		compatible = "zmk,keymap";
 
