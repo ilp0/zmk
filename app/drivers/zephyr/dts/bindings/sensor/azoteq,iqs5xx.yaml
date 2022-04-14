@@ -1,0 +1,15 @@
+description: |
+  Sensor driver for the Azoteq IQS5XX trackpad IC
+compatible: "azoteq,iqs5xx"
+
+include: base.yaml
+
+properties:
+  dr-gpios:
+    type: phandle-array
+    required: true
+    description: Data ready pin for the trackpad
+  invert-x:
+    type: boolean
+  invert-y:
+    type: boolean

@@ -1,0 +1,7 @@
+# Copyright (c) 2020 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+menuconfig MOUSE_SENSOR
+	bool "Handler for Mouse Sensors"
+	help
+	  Enable driver for mouse and trackball sensors. 

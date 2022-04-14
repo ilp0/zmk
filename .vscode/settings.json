@@ -1,7 +1,18 @@
 {
   "files.associations": {
     "*.overlay": "dts",
-    "*.keymap": "dts"
+    "i2c.h": "c",
+    "status_screen.h": "c",
+    "*.tcc": "c",
+    "cmath": "c",
+    "functional": "c",
+    "random": "c",
+    "array": "c",
+    "string": "c",
+    "string_view": "c",
+    "sensor.h": "c",
+    "mouse.h": "c",
+    "display.h": "c"
   },
   "python.formatting.provider": "black"
 }
