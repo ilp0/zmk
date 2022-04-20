@@ -71,6 +71,7 @@
 
     trackpad: trackpad@74 {
         compatible = "azoteq,iqs5xx";
+        label = "AZOTEQ_IQS5XX";
         status = "okay";
         reg = <0x74>;
         dr-gpios = <&pro_micro 0 GPIO_ACTIVE_HIGH>;

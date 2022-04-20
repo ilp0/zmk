@@ -5,11 +5,17 @@ compatible: "azoteq,iqs5xx"
 include: base.yaml
 
 properties:
+  label:
+    type: string
+    required: true
+
   dr-gpios:
     type: phandle-array
     required: true
     description: Data ready pin for the trackpad
+
   invert-x:
     type: boolean
+    
   invert-y:
     type: boolean

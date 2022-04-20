@@ -18,6 +18,7 @@
 #include <drivers/sensor.h>
 #include <logging/log.h>
 #include "iqs5xx.h"
+#include <devicetree.h>
 
 LOG_MODULE_REGISTER(iqs5xx, CONFIG_SENSOR_LOG_LEVEL);
 
@@ -49,8 +50,6 @@ static bool iqs5xx_init(const struct device *dev) {
 	return 0;
 
 }
-
-///jaösdlllllllllllllllllllllllllllllllllllllllllllll
 
 static int iqs5xx_read_reg(const struct device *dev, uint8_t reg,
 			      void *data, size_t length)
