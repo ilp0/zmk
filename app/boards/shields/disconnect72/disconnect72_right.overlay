@@ -31,24 +31,24 @@
             , <&pro_micro 14 GPIO_ACTIVE_HIGH> // Col 5 in the schematic
             ;
     };
-
-    right_encoder: encoder_right {
-        compatible = "alps,ec11";
-        label = "RIGHT_ENCODER";
-        a-gpios = < &pro_micro 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        b-gpios = < &pro_micro 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
-        resolution = <4>;
-    };
+//    right_encoder: encoder_right {
+//        compatible = "alps,ec11";
+//        label = "RIGHT_ENCODER";
+//        a-gpios = < &pro_micro 10 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+//        b-gpios = < &pro_micro 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+//        resolution = <4>;
+//    };
 
     sensors {
         compatible = "zmk,keymap-sensors";
-        sensors = <&right_encoder>;
+       // sensors = <&right_encoder>, ;
+       sensors = <&trackpad>;
     };
 };
 
-&right_encoder {
-    status = "okay";
-};
+//&right_encoder {
+//    status = "okay";
+//};
 
 &pro_micro_i2c {
 	status = "okay";

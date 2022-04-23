@@ -10,12 +10,10 @@
 
 #pragma once
 #define	END_WINDOW				(uint16_t)0xEEEE
-
-
 #include <device.h>
 #include <drivers/i2c.h>
 #include <sys/util.h>
-
+/*
 struct iqs5xx_sample {
 	int16_t 	i16RelX[6];
     int16_t 	i16RelY[6];
@@ -24,17 +22,34 @@ struct iqs5xx_sample {
     uint16_t 	ui16TouchStrength[6];
     uint8_t 	ui8NoOfFingers;
     uint8_t     gesture;
+};*/
+
+struct iqs5xx_data {
+	const struct device *i2c;
+    //relative x,y
+    int16_t rx, ry;
+    //absolute x,y
+    uint16_t ax, ay;
+    uint8_t gesture;
+    const struct device *dev;
+    const struct sensor_trigger *data_ready_trigger;
+	struct gpio_callback gpio_cb;
+    sensor_trigger_handler_t data_ready_handler;
+    K_THREAD_STACK_MEMBER(thread_stack, 1024);
+    struct k_sem gpio_sem;
+    struct k_thread thread;
 };
 
-struct iqs5xx_dev_config {
-    uint8_t     addr;
+struct iqs5xx_config {
+    bool invert_x, invert_y, no_taps;
+    const struct device *dr_port;
+    //Data Ready pin
+    uint8_t dr_pin, dr_flags;
 };
 
-struct iqs5xx_dev_data {
-	const struct device *i2c_slave;
- 	struct iqs5xx_dev_config config;
-    struct iqs5xx_sample sample;
+__subsystem struct iqs5xx_sensor_driver_api {
 };
+
 
 #define AZOTEQ_IQS5XX_ADDR      0x74
 
