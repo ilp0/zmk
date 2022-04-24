@@ -86,6 +86,13 @@ static int iqs5xx_write(const struct device *dev, const uint16_t start_addr, uin
     return err;
 }
 
+static int iqs5xx_attr_set(const struct device *dev, enum sensor_channel chan,
+                           enum sensor_attribute attr, const struct sensor_value *val) {
+	LOG_ERR("\nSetting attributes\n");
+    const struct iqs5xx_config *config = dev->config;
+    return 0;
+}
+
 /**
  * @brief Get sensor channel. Not to be confused with trackpad internal channel.
  *
@@ -96,6 +103,8 @@ static int iqs5xx_write(const struct device *dev, const uint16_t start_addr, uin
  */
 static int iqs5xx_channel_get(const struct device *dev, enum sensor_channel chan,
                               struct sensor_value *val) {
+    LOG_ERR("\nCHANNEL GET");
+
     const struct iqs5xx_data *data = dev->data;
     switch (chan) {
     case SENSOR_CHAN_POS_DX:
@@ -114,6 +123,8 @@ static int iqs5xx_channel_get(const struct device *dev, enum sensor_channel chan
 }
 
 static int iqs5xx_sample_fetch(const struct device *dev, enum sensor_channel chan) {
+    LOG_ERR("\nSAMPLE FETCH");
+
     uint8_t buffer[44];
     int res = iqs5xx_seq_read(dev, GestureEvents0_adr, buffer, 44);
     if (res < 0) {
@@ -214,6 +225,7 @@ static int iqs5xx_sample_fetch(const struct device *dev, enum sensor_channel cha
  * @param en
  */
 static void set_int(const struct device *dev, const bool en) {
+	LOG_ERR("\nSetting interrupt\n");
     const struct iqs5xx_config *config = dev->config;
     int ret = gpio_pin_interrupt_configure(config->dr_port, config->dr_pin,
                                            en ? GPIO_INT_LEVEL_ACTIVE : GPIO_INT_DISABLE);
@@ -233,12 +245,16 @@ static void set_int(const struct device *dev, const bool en) {
 static int iqs5xx_trigger_set(const struct device *dev, const struct sensor_trigger *trig,
                               sensor_trigger_handler_t handler) {
     struct iqs5xx_data *data = dev->data;
-		LOG_ERR("\nTRIGGER_SET");
+    LOG_ERR("\nTRIGGER_SET");
 
     set_int(dev, false);
     if (trig->type != SENSOR_TRIG_DATA_READY) {
+        LOG_ERR("\nENOTSUP");
+
         return -ENOTSUP;
     }
+    LOG_ERR("\nNOT ENOTSUP");
+
     data->data_ready_trigger = trig;
     data->data_ready_handler = handler;
     set_int(dev, true);
@@ -248,14 +264,14 @@ static int iqs5xx_trigger_set(const struct device *dev, const struct sensor_trig
 static void iqs5xx_int_cb(const struct device *dev) {
     struct iqs5xx_data *data = dev->data;
     data->data_ready_handler(dev, data->data_ready_trigger);
-	LOG_ERR("\nINT_CB");
+    LOG_ERR("\nINT_CB");
     set_int(dev, true);
 }
 
 static void iqs5xx_thread(void *arg) {
     const struct device *dev = arg;
     struct iqs5xx_data *data = dev->data;
-	LOG_ERR("\nSTART THREAD");
+    LOG_ERR("\nSTART THREAD");
     while (1) {
         k_sem_take(&data->gpio_sem, K_FOREVER);
         iqs5xx_int_cb(dev);
@@ -264,7 +280,7 @@ static void iqs5xx_thread(void *arg) {
 }
 
 static void iqs5xx_gpio_cb(const struct device *port, struct gpio_callback *cb, uint32_t pins) {
-		LOG_ERR("\nGPIO_CB");
+    LOG_ERR("\nGPIO_CB");
 
     struct iqs5xx_data *data = CONTAINER_OF(cb, struct iqs5xx_data, gpio_cb);
     const struct device *dev = data->dev;
@@ -278,19 +294,33 @@ static int iqs5xx_init(const struct device *dev) {
     LOG_ERR("\nstarting trackpad INIT\n");
     struct iqs5xx_data *data = dev->data;
     const struct iqs5xx_config *config = dev->config;
-    uint8_t activeRefreshRate[2] = {0, 8};
+
+    data->dev = dev;
+
+	uint8_t activeRefreshRate[2] = {0, 8};
     uint8_t idleRefreshRate[2] = {0, 16};
     uint8_t stop = 1;
-    /*init settings	*/
-    data->dev = dev;
+	iqs5xx_write(dev, ActiveRR_adr, &activeRefreshRate[0], 2);
+	 LOG_ERR("\nactiverr\n");
+	iqs5xx_write(dev, END_WINDOW, 0, 1);
+	LOG_ERR("\nend_window\n");
     iqs5xx_write(dev, IdleRR_adr, &idleRefreshRate[0], 2);
+	LOG_ERR("\nidlerr\n");
     iqs5xx_write(dev, END_WINDOW, 0, 1);
+	LOG_ERR("\nend_window1\n");
     iqs5xx_write(dev, IdleTouchRR_adr, &idleRefreshRate[0], 2);
+	LOG_ERR("\nidlerr2\n");
     iqs5xx_write(dev, END_WINDOW, 0, 1);
+	LOG_ERR("\nend_window2\n");
     iqs5xx_write(dev, LP2RR_adr, &activeRefreshRate[0], 2);
+	LOG_ERR("\nactiverr2\n");
     iqs5xx_write(dev, END_WINDOW, 0, 1);
+	LOG_ERR("\nend_window3\n");
     iqs5xx_write(dev, LP2RR_adr, &activeRefreshRate[0], 2);
+	LOG_ERR("\nactiverr3\n");
     iqs5xx_write(dev, END_WINDOW, 0, 1);
+	LOG_ERR("\nend_window2\n");
+
     gpio_pin_configure(config->dr_port, config->dr_pin, GPIO_INPUT | config->dr_flags);
     gpio_init_callback(&data->gpio_cb, iqs5xx_gpio_cb, BIT(config->dr_pin));
     int ret = gpio_add_callback(config->dr_port, &data->gpio_cb);
@@ -302,7 +332,7 @@ static int iqs5xx_init(const struct device *dev) {
     k_sem_init(&data->gpio_sem, 0, UINT_MAX);
 
     k_thread_create(&data->thread, data->thread_stack, 1024, (k_thread_entry_t)iqs5xx_thread,
-                    (void *)dev, 0, NULL, K_PRIO_COOP(90), 0, K_NO_WAIT);
+                    (void *)dev, 0, NULL, K_PRIO_COOP(CONFIG_IQS5XX_THREAD_PRIORITY), 0, K_NO_WAIT);
     return 0;
 }
 
@@ -310,6 +340,7 @@ static const struct sensor_driver_api iqs5xx_driver_api = {
     .trigger_set = iqs5xx_trigger_set,
     .sample_fetch = iqs5xx_sample_fetch,
     .channel_get = iqs5xx_channel_get,
+    .attr_set = iqs5xx_attr_set,
 };
 
 static const struct iqs5xx_data iqs5xx_data = {

@@ -4,6 +4,8 @@ compatible: "azoteq,iqs5xx"
 
 include: base.yaml
 
+on-bus: i2c
+
 properties:
   label:
     type: string
