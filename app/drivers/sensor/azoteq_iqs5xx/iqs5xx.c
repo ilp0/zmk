@@ -320,8 +320,12 @@ static int iqs5xx_init(const struct device *dev) {
 	LOG_ERR("\nactiverr3\n");
     iqs5xx_write(dev, END_WINDOW, 0, 1);
 	LOG_ERR("\nend_window2\n");
-
-    gpio_pin_configure(config->dr_port, config->dr_pin, GPIO_INPUT | config->dr_flags);
+	uint8_t buffer[44];
+    int res = iqs5xx_seq_read(dev, GestureEvents0_adr, buffer, 44);
+	LOG_ERR("\n READ DATA %d", ((buffer[5] << 8) | (buffer[6])));
+	
+	gpio_pin_configure(config->dr_port, config->dr_pin, GPIO_INPUT | config->dr_flags);
+	
     gpio_init_callback(&data->gpio_cb, iqs5xx_gpio_cb, BIT(config->dr_pin));
     int ret = gpio_add_callback(config->dr_port, &data->gpio_cb);
     if (ret < 0) {
