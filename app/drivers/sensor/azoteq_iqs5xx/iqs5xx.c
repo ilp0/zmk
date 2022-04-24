@@ -263,4 +263,8 @@ static const struct iqs5xx_config iqs5xx_config = {
     .dr_flags = DT_INST_GPIO_FLAGS(0, dr_gpios),
 };
 
+static const struct iqs5xx_data iqs5xx_data = {
+
+};
+
  DEVICE_DT_INST_DEFINE(0, iqs5xx_init, device_pm_control_nop, &iqs5xx_data, &iqs5xx_config, POST_KERNEL, CONFIG_SENSOR_INIT_PRIORITY, &iqs5xx_driver_api);
