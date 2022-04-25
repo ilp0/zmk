@@ -53,19 +53,7 @@ static int iqs5xx_write(const struct device *dev, const uint16_t start_addr, uin
 
     LOG_ERR("\nwrite iqs5xx");
     const struct iqs5xx_data *data = dev->data;
-    // const struct iqs5xx_config *config = dev->config;
-    /*
-        uint8_t nbuf[64];
-        nbuf[1] = addr & 0xFF;
-        nbuf[1] = addr >> 8;
-        for(int i = 0; i < len; i++) {
-            nbuf[i + 2] = buf[i];
-        }
-
-        int err = i2c_write(data->i2c, (const uint8_t*)nbuf, len + 2, AZOTEQ_IQS5XX_ADDR);
-        LOG_ERR("\n%d", err);
-
-        return err;*/
+    
     LOG_ERR("\nwrite iqs5xx");
 
     uint8_t addr_buffer[2];
@@ -308,18 +296,10 @@ static int iqs5xx_init(const struct device *dev) {
 	LOG_ERR("\nidlerr\n");
     iqs5xx_write(dev, END_WINDOW, 0, 1);
 	LOG_ERR("\nend_window1\n");
-    iqs5xx_write(dev, IdleTouchRR_adr, &idleRefreshRate[0], 2);
-	LOG_ERR("\nidlerr2\n");
-    iqs5xx_write(dev, END_WINDOW, 0, 1);
-	LOG_ERR("\nend_window2\n");
     iqs5xx_write(dev, LP2RR_adr, &activeRefreshRate[0], 2);
 	LOG_ERR("\nactiverr2\n");
     iqs5xx_write(dev, END_WINDOW, 0, 1);
 	LOG_ERR("\nend_window3\n");
-    iqs5xx_write(dev, LP2RR_adr, &activeRefreshRate[0], 2);
-	LOG_ERR("\nactiverr3\n");
-    iqs5xx_write(dev, END_WINDOW, 0, 1);
-	LOG_ERR("\nend_window2\n");
 	uint8_t buffer[44];
     int res = iqs5xx_seq_read(dev, GestureEvents0_adr, buffer, 44);
 	LOG_ERR("\n READ DATA %d", ((buffer[5] << 8) | (buffer[6])));
