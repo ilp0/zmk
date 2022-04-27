@@ -35,7 +35,7 @@ struct iqs5xx_data {
     const struct sensor_trigger *data_ready_trigger;
 	struct gpio_callback gpio_cb;
     sensor_trigger_handler_t data_ready_handler;
-    K_THREAD_STACK_MEMBER(thread_stack, 1024);
+    //K_THREAD_STACK_MEMBER(thread_stack, 2000);
     struct k_sem gpio_sem;
     struct k_thread thread;
 };

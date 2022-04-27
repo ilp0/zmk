@@ -115,6 +115,7 @@ static int iqs5xx_sample_fetch(const struct device *dev, enum sensor_channel cha
 
     uint8_t buffer[44];
     int res = iqs5xx_seq_read(dev, GestureEvents0_adr, buffer, 44);
+	iqs5xx_write(dev, END_WINDOW, 0, 1);
     if (res < 0) {
         LOG_ERR("\ntrackpad res: %d", res);
         return res;
@@ -252,24 +253,30 @@ static int iqs5xx_trigger_set(const struct device *dev, const struct sensor_trig
 static void iqs5xx_int_cb(const struct device *dev) {
     struct iqs5xx_data *data = dev->data;
     data->data_ready_handler(dev, data->data_ready_trigger);
-    LOG_ERR("\nINT_CB");
     set_int(dev, true);
 }
 
-static void iqs5xx_thread(void *arg) {
+static void iqs5xx_thread(void *arg, void *unused2, void *unused3) {
+	LOG_ERR("\nSTART THREAD FUNCTION");
     const struct device *dev = arg;
+	LOG_ERR("\nPAST DEVICE DEFINITION");
+
+	ARG_UNUSED(unused2);
+	ARG_UNUSED(unused3);
     struct iqs5xx_data *data = dev->data;
-    LOG_ERR("\nSTART THREAD");
     while (1) {
-        k_sem_take(&data->gpio_sem, K_FOREVER);
-        iqs5xx_int_cb(dev);
-        iqs5xx_write(dev, END_WINDOW, 0, 1);
+		k_sem_give(&data->gpio_sem);
+
+         if (k_sem_take(&data->gpio_sem, K_FOREVER) != 0) {
+			 LOG_ERR("NO INPUT DATA AVAILABLE");
+		 }else {
+        	iqs5xx_int_cb(dev);
+		 }
     }
 }
 
 static void iqs5xx_gpio_cb(const struct device *port, struct gpio_callback *cb, uint32_t pins) {
-    LOG_ERR("\nGPIO_CB");
-
+    //LOG_ERR("\nGPIO_CB");
     struct iqs5xx_data *data = CONTAINER_OF(cb, struct iqs5xx_data, gpio_cb);
     const struct device *dev = data->dev;
     k_sem_give(&data->gpio_sem);
@@ -277,7 +284,7 @@ static void iqs5xx_gpio_cb(const struct device *port, struct gpio_callback *cb, 
 
 //#define I2C_BUS DT_BUS(DT_NODELABEL(trackpad))
 //#define I2C_REG DT_REG_ADDR(DT_NODELABEL(trackpad))
-
+K_THREAD_STACK_DEFINE(thread_stack, 2000);
 static int iqs5xx_init(const struct device *dev) {
     LOG_ERR("\nstarting trackpad INIT\n");
     struct iqs5xx_data *data = dev->data;
@@ -313,10 +320,15 @@ static int iqs5xx_init(const struct device *dev) {
         return -EIO;
     }
 
-    k_sem_init(&data->gpio_sem, 0, UINT_MAX);
+    k_sem_init(&data->gpio_sem, 1, UINT_MAX);
+	//K_THREAD_DEFINE(trackpad_thread, 1024, iqs5xx_thread,
+    //                data->dev,  NULL, NULL, K_PRIO_COOP(10), 0, 0);
+		
+    /*k_thread_create(&data->thread, thread_stack, 2000, iqs5xx_thread,
+                     (void*)data->dev,  NULL, NULL, K_PRIO_COOP(10), 0, K_WAIT);*/
+	//k_thread_name_set(&data->thread, "iqs5xx");
+	LOG_ERR("\nend trackpad init\n");
 
-    k_thread_create(&data->thread, data->thread_stack, 1024, (k_thread_entry_t)iqs5xx_thread,
-                    (void *)dev, 0, NULL, K_PRIO_COOP(CONFIG_IQS5XX_THREAD_PRIORITY), 0, K_NO_WAIT);
     return 0;
 }
 
@@ -332,10 +344,12 @@ static const struct iqs5xx_data iqs5xx_data = {
 };
 
 static const struct iqs5xx_config iqs5xx_config = {
-    .dr_port = DEVICE_DT_GET(DT_GPIO_CTLR(DT_NODELABEL(trackpad), dr_gpios)),
+    .dr_port = DEVICE_DT_GET(DT_GPIO_CTLR(DT_DRV_INST(0), dr_gpios)),
     .dr_pin = DT_INST_GPIO_PIN(0, dr_gpios),
     .dr_flags = DT_INST_GPIO_FLAGS(0, dr_gpios),
 };
 
 DEVICE_DT_INST_DEFINE(0, iqs5xx_init, device_pm_control_nop, &iqs5xx_data, &iqs5xx_config,
                       POST_KERNEL, 90, &iqs5xx_driver_api);
+					  
+K_THREAD_DEFINE(thread, 1024, iqs5xx_thread, DEVICE_DT_GET(DT_DRV_INST(0)), NULL, NULL, K_PRIO_COOP(10), 0, 0);

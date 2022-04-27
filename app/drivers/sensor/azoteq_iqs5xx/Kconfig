@@ -10,34 +10,10 @@ menuconfig IQS5XX
 
 if IQS5XX
 
-choice
-	prompt "Trigger mode"
-	default IQS5XX_TRIGGER_NONE
-	help
-	  Specify the type of triggering to be used by the driver.
-
-config IQS5XX_TRIGGER_NONE
-	bool "No trigger"
-
-config IQS5XX_TRIGGER_GLOBAL_THREAD
-	bool "Use global thread"
-	depends on GPIO
-	select IQS5XX_TRIGGER
-
-config IQS5XX_TRIGGER_OWN_THREAD
-	bool "Use own thread"
-	depends on GPIO
-	select IQS5XX_TRIGGER
-
-endchoice
-
-config IQS5XX_TRIGGER
-	bool
-
 config IQS5XX_THREAD_PRIORITY
 	int "Thread priority"
 	depends on IQS5XX_TRIGGER_OWN_THREAD
-	default 10
+	default 100
 	help
 	  Priority of thread used by the driver to handle interrupts.
 
