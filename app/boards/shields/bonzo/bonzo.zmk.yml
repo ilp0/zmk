@@ -1,0 +1,8 @@
+file_format: "1"
+id: bonzo
+name: bonzo
+type: shield
+url: https://github.com/CatGirlGF/Bonzo/
+requires: [pro_micro]
+features:
+  - keys
