@@ -1,0 +1,7 @@
+config BOARD_HIDERGO_SPLIT_LEFT
+	bool "hidergo_split_left"
+	depends on SOC_NRF52833_QIAA
+
+config BOARD_HIDERGO_SPLIT_RIGHT
+	bool "hidergo_split_right"
+	depends on SOC_NRF52833_QIAA

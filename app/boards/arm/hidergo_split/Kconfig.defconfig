@@ -1,0 +1,29 @@
+
+if BOARD_HIDERGO_SPLIT_LEFT
+config ZMK_KEYBOARD_NAME
+	default "hid:ergoSplitL"
+endif
+
+if BOARD_HIDERGO_SPLIT_RIGHT
+config ZMK_KEYBOARD_NAME
+	default "hid:ergoSplit"
+endif
+
+if BOARD_HIDERGO_SPLIT_LEFT || BOARD_HIDERGO_SPLIT_RIGHT
+
+config BOARD
+	default "hidergo_split"
+
+config USB_NRFX
+	default y
+
+config BT_CTLR
+	default BT
+
+config ZMK_BLE
+	default y
+
+config ZMK_USB
+	default y
+
+endif

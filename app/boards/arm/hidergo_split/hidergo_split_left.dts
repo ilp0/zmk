@@ -1,0 +1,66 @@
+#include "hidergo_split.dts"
+/ {
+    kscan0: kscan {
+        compatible = "zmk,kscan-gpio-matrix";
+        diode-direction = "col2row";
+        label="KSCAN";
+        row-gpios
+        = <&gpio0 14 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row 0 from the schematic file
+        , <&gpio0 16 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row 1 from the schematic file
+        , <&gpio1 8 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row 2 from the schematic file
+        , <&gpio0 6 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row 3 from the schematic file
+        , <&gpio0 7 (GPIO_ACTIVE_HIGH | GPIO_PULL_DOWN)> // Row 4 from the schematic file
+        ;
+        //TODO: need to add col 6 and 7
+        col-gpios
+        = <&gpio0 28 GPIO_ACTIVE_HIGH> // Col 1 in the schematic
+        , <&gpio0 30 GPIO_ACTIVE_HIGH> // Col 2 in the schematic
+        , <&gpio0 31 GPIO_ACTIVE_HIGH> // Col 3 in the schematic
+        , <&gpio0 27 GPIO_ACTIVE_HIGH> // Col 4 in the schematic
+        , <&gpio0 4 GPIO_ACTIVE_HIGH> // Col 5 in the schematic
+        ;
+    };
+
+    left_encoder: encoder_left {
+        compatible = "alps,ec11";
+        label = "LEFT_ENCODER";
+        a-gpios = < &gpio0 15 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        b-gpios = < &gpio0 13 (GPIO_ACTIVE_HIGH | GPIO_PULL_UP)>;
+        resolution = <4>;
+    };
+
+    sensors {
+        compatible = "zmk,keymap-sensors";
+        sensors = <&left_encoder>;
+    };
+};
+
+&left_encoder {
+    status = "okay";
+};
+/*
+&spi2  {
+	status = "okay";
+	compatible = "nordic,nrf-spim";
+	sck-pin = <22>;
+	mosi-pin = <24>;
+	miso-pin = <23>;
+	cs-gpios = <&gpio1 10 GPIO_ACTIVE_LOW>;
+
+	epd: il0323@0 {
+		compatible = "gooddisplay,il0323";
+		reg =  <0>;
+		label = "DISPLAY";
+		width = <80>;
+		height = <128>;
+		spi-max-frequency = <4000000>;
+		dc-gpios = <&gpio0 9 GPIO_ACTIVE_LOW>;
+		busy-gpios = <&gpio1 1 GPIO_ACTIVE_LOW>;
+		reset-gpios = <&gpio0 21 GPIO_ACTIVE_LOW>;
+		pwr = [03 00 26 26];
+		//softstart = [17 17 17 17];
+		cdi = <0xd2>;
+		tcon = <0x22>;
+	};
+};
+*/
