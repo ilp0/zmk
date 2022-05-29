@@ -18,6 +18,7 @@ module.exports = {
       "features/underglow",
       "features/backlight",
       "features/trackballs",
+      "features/battery",
       "features/beta-testing",
     ],
     Behaviors: [
@@ -70,6 +71,7 @@ module.exports = {
         items: [
           "development/new-shield",
           "development/hardware-metadata-files",
+          "development/new-behavior",
         ],
       },
     ],

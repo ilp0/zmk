@@ -1,0 +1,25 @@
+# Copyright (c) 2021 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+if BOARD_HIDERGO_SPLIT
+
+config BOARD
+	default "hidergo_split"
+
+config USB_NRFX
+	default y
+
+# Enable UART driver, needed for CDC ACM
+config USB_CDC_ACM
+	default y
+
+config BT_CTLR
+	default BT
+
+config ZMK_BLE
+	default y
+
+config ZMK_USB
+	default y
+
+endif # BOARD_HIDERGO_SPLIT

@@ -1,0 +1,9 @@
+# nice!nano board configuration
+
+# Copyright (c) 2020 Pete Johanson
+# SPDX-License-Identifier: MIT
+
+config BOARD_HIDERGO_SPLIT
+	bool "hidergo_split"
+	depends on SOC_NRF52833_QIAA
+
