@@ -18,6 +18,7 @@ module.exports = {
       "features/underglow",
       "features/backlight",
       "features/trackballs",
+      "features/battery",
       "features/beta-testing",
     ],
     Behaviors: [

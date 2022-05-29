@@ -11,10 +11,13 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/event_manager.h>
 #include <zmk/events/mouse_tick.h>
 #include <zmk/endpoints.h>
+#include <zmk/hid.h>
 #include <zmk/mouse.h>
 
 #include <sys/util.h> // CLAMP
 
+//TODO: probably a better flag to use here
+#if(CONFIG_ZMK_SPLIT_BLE_ROLE_CENTRAL)
 #if CONFIG_MINIMAL_LIBC
 static float powf(float base, float exponent) {
     // poor man's power implementation rounds the exponent down to the nearest integer.
@@ -100,3 +103,5 @@ int zmk_mouse_tick_listener(const zmk_event_t *eh) {
 
 ZMK_LISTENER(zmk_mouse_tick_listener, zmk_mouse_tick_listener);
 ZMK_SUBSCRIPTION(zmk_mouse_tick_listener, zmk_mouse_tick);
+
+#endif /* CONFIG_ZMK_SPLIT_BLE_ROLE_CENTRAL */

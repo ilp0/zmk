@@ -18,6 +18,8 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 #include <zmk/endpoints.h>
 #include <zmk/mouse.h>
 
+//TODO: There is probably a better flag to use here
+#if(CONFIG_ZMK_SPLIT_BLE_ROLE_CENTRAL)
 static struct vector2d move_speed = {0};
 static struct vector2d scroll_speed = {0};
 static struct mouse_config move_config = (struct mouse_config){0};
@@ -158,3 +160,5 @@ ZMK_LISTENER(mouse_listener, mouse_listener);
 ZMK_SUBSCRIPTION(mouse_listener, zmk_mouse_button_state_changed);
 ZMK_SUBSCRIPTION(mouse_listener, zmk_mouse_move_state_changed);
 ZMK_SUBSCRIPTION(mouse_listener, zmk_mouse_scroll_state_changed);
+
+#endif /* CONFIG_ZMK_SPLIT_BLE_ROLE_CENTRAL */
