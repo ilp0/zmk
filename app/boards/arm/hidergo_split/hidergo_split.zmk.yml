@@ -1,0 +1,9 @@
+file_format: "1"
+id: hidergo_split_left_52833
+name: Split (L)
+type: board
+arch: arm
+outputs:
+  - usb
+  - ble
+url: https://github.com/ilp0/zmk
